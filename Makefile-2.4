@@ -1,0 +1,20 @@
+
+KERNEL_SOURCE=/usr/src/kernel-headers-2.4.27-1-386
+CFLAGS=-D__KERNEL__ -Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -fomit-frame-pointer -pipe -mpreferred-stack-boundary=2 -march=i386 -DMODULE
+
+all: jr3pci-driver.o  test jr3mon
+
+jr3pci-driver.o:	jr3pci-driver.c jr3pci-driver.h jr3pci-ioctl.c jr3pci-ioctl.h jr3pci-firmware.h
+	gcc -I$(KERNEL_SOURCE)/include $(CFLAGS) -c jr3pci-driver.c
+
+test:	test.cpp
+	g++ -o test test.cpp
+
+jr3mon: jr3mon.c
+	gcc -o jr3mon jr3mon.c -lncurses
+
+node:
+	mknod /dev/jr3 c 39 0
+
+clean:
+	rm jr3mon test jr3pci-driver.o
