@@ -1,10 +1,10 @@
 #include "jr3pci-ioctl.h"
 
-unsigned long *jr3_base_address;
+void __iomem *jr3_base_address;
 
 /** Board address to PCI virtual address conversion */
-int board2virtual(int ba) {
-	return (int)jr3_base_address+4*ba;
+void __iomem *board2virtual(int ba) {
+	return (void*)jr3_base_address+4*ba;
 }
 
 /** Read data memory */
@@ -40,7 +40,7 @@ int jr3ZeroOffs(int card) {
 	return 0;
 }
 
-int jr3Filter(unsigned int arg, int num_filter, int card) {
+int jr3Filter(unsigned long arg, int num_filter, int card) {
 	int i;
 	int ret=0;
 	int axload[6];
@@ -51,14 +51,14 @@ int jr3Filter(unsigned int arg, int num_filter, int card) {
 		axload[i]= (short) readData(address, card);
 	}
 
-	ret = copy_to_user((int *) arg, (int *) axload, sizeof(six_axis_array));
+	ret = copy_to_user((void *) arg, (int *) axload, sizeof(six_axis_array));
 	return ret;
 }
 
 /* Not tested */
-int jr3SetFullScales(unsigned int arg, int card) {
+int jr3SetFullScales(unsigned long arg, int card) {
 	int fs[8];
-	int ret=copy_from_user((int*) fs, (int *) arg, sizeof(force_array));
+	int ret=copy_from_user((int*) fs, (void *) arg, sizeof(force_array));
 	int i;
 	int address;
 	
@@ -79,14 +79,14 @@ int jr3_release(struct inode *inode, struct file *filp) {
 	return 0;
 }
 
-int jr3GetFullScales(unsigned int arg, int card) {
+int jr3GetFullScales(unsigned long arg, int card) {
   int i;
   int ret=0;
   int fullscales[8];
 
   for (i = 0; i < 8; i++)
 	    fullscales[i]= readData(JR3_FULLSCALE+i, card);
-  ret = copy_to_user((int *) arg, (int *) fullscales, sizeof(force_array));
+  ret = copy_to_user((void *) arg, (int *) fullscales, sizeof(force_array));
 
   return ret;  
 }
