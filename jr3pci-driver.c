@@ -19,7 +19,10 @@
  ***************************************************************************/
 
 #define __MODULE__
+#include <linux/version.h>
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,19)
 #include <linux/config.h>
+#endif
 #include <linux/errno.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -51,7 +54,11 @@ unsigned long memregion;
 int size;
 
 struct file_operations jr3_fops = {
-ioctl:		jr3_ioctl,
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
+.ioctl:		jr3_ioctl,
+#else
+unlocked_ioctl:	jr3_ioctl,
+#endif
 open:		jr3_open,
 release:	jr3_release,
 };
@@ -127,7 +134,7 @@ static int jr3pci_initDSP(int card) {
 int jr3pci_probe(void) {
 	int result=1;
 	struct pci_dev *pci=NULL;
-	pci=pci_find_device(PCI_VENDOR_ID_JR3, PCI_DEVICE_ID_JR3,pci);
+	pci=pci_get_device(PCI_VENDOR_ID_JR3, PCI_DEVICE_ID_JR3,pci);
 	if (pci)
 		if (!pci_enable_device(pci)) {
 				memregion = pci_resource_start(pci, 0);

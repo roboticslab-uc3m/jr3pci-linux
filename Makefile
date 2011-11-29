@@ -1,6 +1,6 @@
 KDIR	:= /lib/modules/$(shell uname -r)/build
 PWD	:= $(shell pwd)
-EXTRA_CFLAGS	:= -Wall -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fomit-frame-pointer 
+EXTRA_CFLAGS	:= -Wall -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common
 
 obj-m	:= jr3pci-driver.o
 
