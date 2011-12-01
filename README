@@ -9,7 +9,7 @@ For compiling it, edit jr3pci-driver.h and set PCI_DEVICE_ID_JR3 to be that of y
 Then, edit the Makefile, and set the path to your kernel sources.
 Finally, type 'make'.
 
-The module is compiled in the file jr3pci-driver.o. For inserting it into the kernel, type 'insmod ./jr3pci-driver.o'
+The module is compiled in the file jr3pci-driver.o. For inserting it into the kernel, type 'insmod ./jr3pci-driver.o' for kernels <=2.4, or 'insmod ./jr3pci-driver.ko' for 2.6 kernels
 
 After inserting it, look at the green leds of your PCI card. If they are on, you're in chance!!! :)
 

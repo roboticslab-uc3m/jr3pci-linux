@@ -91,7 +91,11 @@ int jr3GetFullScales(unsigned long arg, int card) {
   return ret;  
 }
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
 int jr3_ioctl(struct inode *inode, struct file *filp, unsigned int cmd, unsigned long arg)
+#else 
+long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+#endif
 {
 	int err=0;
 	int ret=0;
