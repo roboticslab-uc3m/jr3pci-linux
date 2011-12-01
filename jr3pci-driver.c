@@ -55,7 +55,7 @@ int size;
 
 struct file_operations jr3_fops = {
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
-.ioctl:		jr3_ioctl,
+ioctl:		jr3_ioctl,
 #else
 unlocked_ioctl:	jr3_ioctl,
 #endif
