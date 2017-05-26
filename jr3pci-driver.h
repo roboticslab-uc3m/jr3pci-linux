@@ -1,6 +1,7 @@
 #define PCI_VENDOR_ID_JR3      0x1762 /* PCI Vendor ID */
 //#define PCI_DEVICE_ID_JR3      0x1111 /* PCI Device ID - Single channel PCI. 6DOF sensor*/
-#define PCI_DEVICE_ID_JR3      0x3114 /* PCI Device ID - Double channel PCI. Two 6DOF sensors or one 12DOF sensor*/
+//#define PCI_DEVICE_ID_JR3      0x3112 /* PCI Device ID - Double channel PCI. Two 6DOF sensors or one 12DOF sensor*/
+#define PCI_DEVICE_ID_JR3      0x3114 /* PCI Device ID - 4 channel PCI. 4 6DOF sensors */
 
 #define JR3_RAWCHANNELS   0x6000
 #define JR3_COPYRIGHT     0x6040  /* copyrights                               */
