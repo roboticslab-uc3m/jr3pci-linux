@@ -1,3 +1,5 @@
+Imported from https://sourceforge.net/projects/jr3pci-linux/
+
 This is a linux driver for the JR3 force/torque sensor (PCI card), under 2.4 kernels. Currently, two cards are supported:
 
 - Single channel PCI
