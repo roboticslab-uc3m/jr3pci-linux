@@ -173,17 +173,38 @@ int __init jr3pci_init_module(void)
 	
 	//Reset DSP
 	writeData(JR3_RESET_ADDRESS,0,0);
-	if (PCI_DEVICE_ID_JR3==0x3112)
+	if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
+    {
 		writeData(JR3_RESET_ADDRESS,0,1);
+    }
+	if (PCI_DEVICE_ID_JR3==0x3114)
+    {
+		writeData(JR3_RESET_ADDRESS,0,2);
+		writeData(JR3_RESET_ADDRESS,0,3);
+    }
 	
 	//Download DSP code
 	jr3pci_initDSP(0);
-	if (PCI_DEVICE_ID_JR3==0x3112)
+	if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
+    {
 		jr3pci_initDSP(1);
+    }
+	if (PCI_DEVICE_ID_JR3==0x3114)
+    {
+		jr3pci_initDSP(2);
+		jr3pci_initDSP(3);
+    }
 	
 	show_copyright(0);
-	if (PCI_DEVICE_ID_JR3==0x3112)
+	if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
+    {
 		show_copyright(1);
+    }
+	if (PCI_DEVICE_ID_JR3==0x3114)
+    {
+		show_copyright(2);
+		show_copyright(3);
+    }
 	
 	
 	printk( KERN_INFO "jr3pci: DSP code downloaded!! You can start playing  :)\n");
