@@ -124,6 +124,7 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	  if (err) return err;
 #endif
 	switch(cmd) {
+
 		case IOCTL0_JR3_RESET:
 			ret = jr3Reset(0);
 			break;
@@ -154,56 +155,160 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		case IOCTL0_JR3_GET_FULL_SCALES:
 			ret = jr3GetFullScales(arg,0);
 			break;
+
 		case IOCTL1_JR3_RESET:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Reset(1);
 			else ret=-1;
 			break;
 		case IOCTL1_JR3_ZEROOFFS:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3ZeroOffs(1);
 			else ret=-1;
 			break;
 		case IOCTL1_JR3_FILTER0:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 0,1);
 			else ret=-1;
 			break;	 
 		case IOCTL1_JR3_FILTER1:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 1,1);
 			else ret=-1;
 			break;	 
 		case IOCTL1_JR3_FILTER2:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 2,1);
 			else ret=-1;
 			break;	 
 		case IOCTL1_JR3_FILTER3:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 3,1);
 			else ret=-1;
 			break;	 
 		case IOCTL1_JR3_FILTER4:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 4,1);
 			else ret=-1;
 			break;	 
 		case IOCTL1_JR3_FILTER5:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 5,1);
 			else ret=-1;
 			break;	 
 		case IOCTL1_JR3_FILTER6:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 6,1);
 			else ret=-1;
 			break;	 
 		case IOCTL1_JR3_GET_FULL_SCALES:
-			if (PCI_DEVICE_ID_JR3==0x3112)
+			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3GetFullScales(arg,1);
 			else ret=-1;
 			break;
+
+		case IOCTL2_JR3_RESET:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Reset(2);
+			else ret=-1;
+			break;
+		case IOCTL2_JR3_ZEROOFFS:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3ZeroOffs(2);
+			else ret=-1;
+			break;
+		case IOCTL2_JR3_FILTER0:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 0,2);
+			else ret=-1;
+			break;	 
+		case IOCTL2_JR3_FILTER1:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 1,2);
+			else ret=-1;
+			break;	 
+		case IOCTL2_JR3_FILTER2:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 2,2);
+			else ret=-1;
+			break;	 
+		case IOCTL2_JR3_FILTER3:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 3,2);
+			else ret=-1;
+			break;	 
+		case IOCTL2_JR3_FILTER4:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 4,2);
+			else ret=-1;
+			break;	 
+		case IOCTL2_JR3_FILTER5:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 5,2);
+			else ret=-1;
+			break;	 
+		case IOCTL2_JR3_FILTER6:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 6,2);
+			else ret=-1;
+			break;	 
+		case IOCTL2_JR3_GET_FULL_SCALES:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3GetFullScales(arg,2);
+			else ret=-1;
+			break;
+
+		case IOCTL3_JR3_RESET:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Reset(3);
+			else ret=-1;
+			break;
+		case IOCTL3_JR3_ZEROOFFS:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3ZeroOffs(3);
+			else ret=-1;
+			break;
+		case IOCTL3_JR3_FILTER0:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 0,3);
+			else ret=-1;
+			break;	 
+		case IOCTL3_JR3_FILTER1:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 1,3);
+			else ret=-1;
+			break;	 
+		case IOCTL3_JR3_FILTER2:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 2,3);
+			else ret=-1;
+			break;	 
+		case IOCTL3_JR3_FILTER3:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 3,3);
+			else ret=-1;
+			break;	 
+		case IOCTL3_JR3_FILTER4:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 4,3);
+			else ret=-1;
+			break;	 
+		case IOCTL3_JR3_FILTER5:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 5,3);
+			else ret=-1;
+			break;	 
+		case IOCTL3_JR3_FILTER6:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3Filter(arg, 6,3);
+			else ret=-1;
+			break;	 
+		case IOCTL3_JR3_GET_FULL_SCALES:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3GetFullScales(arg,3);
+			else ret=-1;
+			break;
+
 		default:
 			return -ENOTTY;
 	}
