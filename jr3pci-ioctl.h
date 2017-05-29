@@ -62,6 +62,8 @@ typedef struct six_axis_array {
 #define IOCTL3_JR3_ZEROOFFS           _IO ( JR3_TYPE, 38   )
 #define IOCTL3_JR3_GET_FULL_SCALES _IOR( JR3_TYPE, 39, struct force_array )
 
-#define IOCTL_JR3_MAXNR 40
+#define IOCTL3_JR3_SET_FULL_SCALES _IOW( JR3_TYPE, 40, struct force_array )
+
+#define IOCTL_JR3_MAXNR 41
 #endif
 

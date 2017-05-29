@@ -309,6 +309,12 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			else ret=-1;
 			break;
 
+		case IOCTL3_JR3_SET_FULL_SCALES:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3SetFullScales(arg,3);
+			else ret=-1;
+			break;
+
 		default:
 			return -ENOTTY;
 	}
