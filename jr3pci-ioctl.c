@@ -155,6 +155,11 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		case IOCTL0_JR3_GET_FULL_SCALES:
 			ret = jr3GetFullScales(arg,0);
 			break;
+		case IOCTL0_JR3_SET_FULL_SCALES:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3SetFullScales(arg,0);
+			else ret=-1;
+			break;
 
 		case IOCTL1_JR3_RESET:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
@@ -204,6 +209,11 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 		case IOCTL1_JR3_GET_FULL_SCALES:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3GetFullScales(arg,1);
+			else ret=-1;
+			break;
+		case IOCTL1_JR3_SET_FULL_SCALES:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3SetFullScales(arg,1);
 			else ret=-1;
 			break;
 
@@ -257,6 +267,11 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 				ret = jr3GetFullScales(arg,2);
 			else ret=-1;
 			break;
+		case IOCTL2_JR3_SET_FULL_SCALES:
+			if (PCI_DEVICE_ID_JR3==0x3114)
+				ret = jr3SetFullScales(arg,2);
+			else ret=-1;
+			break;
 
 		case IOCTL3_JR3_RESET:
 			if (PCI_DEVICE_ID_JR3==0x3114)
@@ -308,7 +323,6 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 				ret = jr3GetFullScales(arg,3);
 			else ret=-1;
 			break;
-
 		case IOCTL3_JR3_SET_FULL_SCALES:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3SetFullScales(arg,3);
