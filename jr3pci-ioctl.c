@@ -51,14 +51,14 @@ int jr3Filter(unsigned long arg, int num_filter, int card) {
 		axload[i]= (short) readData(address, card);
 	}
 
-	ret = copy_to_user((void *) arg, (int *) axload, sizeof(six_axis_array));
+	ret = copy_to_user((void *) arg, (double *) axload, sizeof(six_axis_array));
 	return ret;
 }
 
 /* Not tested */
 int jr3SetFullScales(unsigned long arg, int card) {
 	int fs[8];
-	int ret=copy_from_user((int*) fs, (void *) arg, sizeof(force_array));
+	int ret=copy_from_user((double*) fs, (void *) arg, sizeof(force_array));
 	int i;
 	int address;
 	
@@ -86,7 +86,7 @@ int jr3GetFullScales(unsigned long arg, int card) {
 
   for (i = 0; i < 8; i++)
 	    fullscales[i]= readData(JR3_FULLSCALE+i, card);
-  ret = copy_to_user((void *) arg, (int *) fullscales, sizeof(force_array));
+  ret = copy_to_user((void *) arg, (double *) fullscales, sizeof(force_array));
 
   return ret;  
 }
