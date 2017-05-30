@@ -5,14 +5,14 @@
 #define __JR3IOCTL__
 
 typedef struct force_array {
-	  int f[3];
-	  int m[3];
-	  int v[2];
+    double f[3];
+    double m[3];
+    double v[2];
 } force_array;
 
 typedef struct six_axis_array {
-	  int f[3];
-	  int m[3];
+    double f[3];
+    double m[3];
 } six_axis_array;
 
 #define JR3_IOC_MAGIC 'k'
