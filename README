@@ -23,3 +23,4 @@ Alternatively, you can try 'make node'.
 
 Problems, suggestions or anything else: mprats@icc.uji.es
 
+More install and troubleshooting at: https://github.com/roboticslab-uc3m/installation-guides/blob/master/install-jr3.md
