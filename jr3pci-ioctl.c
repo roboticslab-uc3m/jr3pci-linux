@@ -106,7 +106,15 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	if ( type != JR3_IOC_MAGIC) return -ENOTTY;
 	if ( nr > IOCTL_JR3_MAXNR) return -ENOTTY;
 
-#ifndef LINUX_20
+#if LINUX_VERSION_CODE > KERNEL_VERSION(5, 0, 0)
+	  if (_IOC_DIR(cmd) & _IOC_READ)
+		      err = !access_ok((void *)arg, size);
+
+	  if (_IOC_DIR(cmd) & _IOC_WRITE)
+	              err =  !access_ok((void *)arg, size);
+
+	  if (err) return -EFAULT;
+#else
 	  if (_IOC_DIR(cmd) & _IOC_READ)
 		      err = !access_ok(VERIFY_WRITE, (void *)arg, size);
 	  
@@ -114,14 +122,6 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 	              err =  !access_ok(VERIFY_READ, (void *)arg, size);
 	  
 	  if (err) return -EFAULT;
-#else
-	  if (_IOC_DIR(cmd) & _IOC_READ)
-	              err = verify_area(VERIFY_WRITE, (void *)arg, size);
-	  
-	  if (_IOC_DIR(cmd) & _IOC_WRITE)
-	              err =  verify_area(VERIFY_READ, (void *)arg, size);
-	  
-	  if (err) return err;
 #endif
 	switch(cmd) {
 
