@@ -33,6 +33,7 @@
 #include <linux/mm.h>
 #include <linux/slab.h>
 #include <linux/unistd.h>
+#include <linux/uaccess.h>
 #include <asm/uaccess.h>
 //#include <stdio.h>
 
@@ -71,7 +72,7 @@ static int show_copyright(short card) {
 	char units_str[16];
 	int base=0x6040;
 	short day, year, units;
-	
+
 	for (i=0;i<18;i++) {
 		copyright[i]=(char)(readData(base,card) >> 8);
 		base++;
@@ -100,12 +101,12 @@ static int show_copyright(short card) {
 static int jr3pci_initDSP(int card) {
 	int i=0;
 	int count,address,value, value2;
-	
+
 	count=jr3_firmware[i++];
 	while (count != 0xffff) {
 		address=jr3_firmware[i++];
 		printk(KERN_INFO "jr3pci(%d): DSP Code. File pos. %d, Address 0x%x, %d times\n", card, i, address,count);
-		
+
 		while (count>0) {
 			if (address & JR3_PD_DEVIDER) {
 				value=jr3_firmware[i++];
@@ -113,7 +114,7 @@ static int jr3pci_initDSP(int card) {
 				if (value!=readData(address,card)) {
 					printk(KERN_INFO "data write error at address 0x%x", address);
 				}
-				count--;	
+				count--;
 			} else {
 				value=jr3_firmware[i++];
 				value2=jr3_firmware[i++];
@@ -139,7 +140,6 @@ int jr3pci_probe(void) {
 		if (!pci_enable_device(pci)) {
 				memregion = pci_resource_start(pci, 0);
 				size = pci_resource_len(pci,0);
-				if (!check_mem_region(memregion,size))
 				  if (request_mem_region(memregion,size,"JR3pci")) {
 					jr3_base_address=ioremap(memregion,size);
 					printk(KERN_INFO "jr3pci: mem mapped succesfully\n");
@@ -153,14 +153,14 @@ int jr3pci_probe(void) {
 int __init jr3pci_init_module(void)
 {
 	int result;
-	
+
 	printk( KERN_INFO "jr3pci: %s by %s\n",JR3_DESC, JR3_AUTHOR );
 	result=register_chrdev(JR3_MAJOR,"jr3pci",&jr3_fops);
 	if (result<0) {
 		printk(KERN_INFO "jr3pci: Can't open device file with major %d. Make sure it exists!\n", JR3_MAJOR);
 		return result;
 	}
-	
+
 	if (jr3pci_probe()) {
 		printk( KERN_INFO "jr3pci: No devices found\n");
 		unregister_chrdev(JR3_MAJOR,"jr3pci");
@@ -168,9 +168,9 @@ int __init jr3pci_init_module(void)
 	}
 
 	printk( KERN_INFO "jr3pci: JR3 PCI card detected at 0x%x\n", (int)jr3_base_address);
-	
 
-	
+
+
 	//Reset DSP
 	writeData(JR3_RESET_ADDRESS,0,0);
 	if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
@@ -182,7 +182,7 @@ int __init jr3pci_init_module(void)
 		writeData(JR3_RESET_ADDRESS,0,2);
 		writeData(JR3_RESET_ADDRESS,0,3);
     }
-	
+
 	//Download DSP code
 	jr3pci_initDSP(0);
 	if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
@@ -194,7 +194,7 @@ int __init jr3pci_init_module(void)
 		jr3pci_initDSP(2);
 		jr3pci_initDSP(3);
     }
-	
+
 	show_copyright(0);
 	if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
     {
@@ -205,8 +205,8 @@ int __init jr3pci_init_module(void)
 		show_copyright(2);
 		show_copyright(3);
     }
-	
-	
+
+
 	printk( KERN_INFO "jr3pci: DSP code downloaded!! You can start playing  :)\n");
 
 	return 0;
