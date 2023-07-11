@@ -29,6 +29,9 @@ modprobe:
 test:	test.cpp
 	g++ -o test test.cpp
 
+raw:	raw.cpp
+	g++ -o raw raw.cpp
+
 jr3mon:	jr3mon.c
 	gcc -o jr3mon jr3mon.c -lncurses
 

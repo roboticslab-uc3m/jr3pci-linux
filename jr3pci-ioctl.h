@@ -15,6 +15,17 @@ typedef struct six_axis_array {
 	  int m[3];
 } six_axis_array;
 
+typedef struct raw_channel {
+	  unsigned int raw_time;
+	  int raw_data;
+	  int reserved[2];
+} raw_channel;
+
+typedef struct force_and_raw_array {
+	  raw_channel raw_channels[16];
+	  six_axis_array filtered;
+} force_and_raw_array;
+
 #define JR3_IOC_MAGIC 'k'
 #define JR3_TYPE JR3_IOC_MAGIC
 
@@ -29,43 +40,44 @@ typedef struct six_axis_array {
 #define IOCTL0_JR3_ZEROOFFS           _IO ( JR3_TYPE, 8   )
 #define IOCTL0_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 9,  struct force_array )
 #define IOCTL0_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 10, struct force_array )
+#define IOCTL0_JR3_GET_FORCE_AND_RAW  _IOR( JR3_TYPE, 11, struct force_and_raw_array )
 
-#define IOCTL1_JR3_RESET              _IO ( JR3_TYPE, 11 )
-#define IOCTL1_JR3_FILTER0            _IOR( JR3_TYPE, 12,  struct six_axis_array )
-#define IOCTL1_JR3_FILTER1            _IOR( JR3_TYPE, 13,  struct six_axis_array )
-#define IOCTL1_JR3_FILTER2            _IOR( JR3_TYPE, 14,  struct six_axis_array )
-#define IOCTL1_JR3_FILTER3            _IOR( JR3_TYPE, 15,  struct six_axis_array )
-#define IOCTL1_JR3_FILTER4            _IOR( JR3_TYPE, 16,  struct six_axis_array )
-#define IOCTL1_JR3_FILTER5            _IOR( JR3_TYPE, 17,  struct six_axis_array )
-#define IOCTL1_JR3_FILTER6            _IOR( JR3_TYPE, 18,  struct six_axis_array )
-#define IOCTL1_JR3_ZEROOFFS           _IO ( JR3_TYPE, 19   )
-#define IOCTL1_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 20,  struct force_array )
-#define IOCTL1_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 21, struct force_array )
+#define IOCTL1_JR3_RESET              _IO ( JR3_TYPE, 12 )
+#define IOCTL1_JR3_FILTER0            _IOR( JR3_TYPE, 13,  struct six_axis_array )
+#define IOCTL1_JR3_FILTER1            _IOR( JR3_TYPE, 14,  struct six_axis_array )
+#define IOCTL1_JR3_FILTER2            _IOR( JR3_TYPE, 15,  struct six_axis_array )
+#define IOCTL1_JR3_FILTER3            _IOR( JR3_TYPE, 16,  struct six_axis_array )
+#define IOCTL1_JR3_FILTER4            _IOR( JR3_TYPE, 17,  struct six_axis_array )
+#define IOCTL1_JR3_FILTER5            _IOR( JR3_TYPE, 18,  struct six_axis_array )
+#define IOCTL1_JR3_FILTER6            _IOR( JR3_TYPE, 19,  struct six_axis_array )
+#define IOCTL1_JR3_ZEROOFFS           _IO ( JR3_TYPE, 20   )
+#define IOCTL1_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 21,  struct force_array )
+#define IOCTL1_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 22, struct force_array )
 
-#define IOCTL2_JR3_RESET              _IO ( JR3_TYPE, 22 )
-#define IOCTL2_JR3_FILTER0            _IOR( JR3_TYPE, 23,  struct six_axis_array )
-#define IOCTL2_JR3_FILTER1            _IOR( JR3_TYPE, 24,  struct six_axis_array )
-#define IOCTL2_JR3_FILTER2            _IOR( JR3_TYPE, 25,  struct six_axis_array )
-#define IOCTL2_JR3_FILTER3            _IOR( JR3_TYPE, 26,  struct six_axis_array )
-#define IOCTL2_JR3_FILTER4            _IOR( JR3_TYPE, 27,  struct six_axis_array )
-#define IOCTL2_JR3_FILTER5            _IOR( JR3_TYPE, 28,  struct six_axis_array )
-#define IOCTL2_JR3_FILTER6            _IOR( JR3_TYPE, 29,  struct six_axis_array )
-#define IOCTL2_JR3_ZEROOFFS           _IO ( JR3_TYPE, 30   )
-#define IOCTL2_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 31,  struct force_array )
-#define IOCTL2_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 32, struct force_array )
+#define IOCTL2_JR3_RESET              _IO ( JR3_TYPE, 23 )
+#define IOCTL2_JR3_FILTER0            _IOR( JR3_TYPE, 24,  struct six_axis_array )
+#define IOCTL2_JR3_FILTER1            _IOR( JR3_TYPE, 25,  struct six_axis_array )
+#define IOCTL2_JR3_FILTER2            _IOR( JR3_TYPE, 26,  struct six_axis_array )
+#define IOCTL2_JR3_FILTER3            _IOR( JR3_TYPE, 27,  struct six_axis_array )
+#define IOCTL2_JR3_FILTER4            _IOR( JR3_TYPE, 28,  struct six_axis_array )
+#define IOCTL2_JR3_FILTER5            _IOR( JR3_TYPE, 29,  struct six_axis_array )
+#define IOCTL2_JR3_FILTER6            _IOR( JR3_TYPE, 30,  struct six_axis_array )
+#define IOCTL2_JR3_ZEROOFFS           _IO ( JR3_TYPE, 31   )
+#define IOCTL2_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 32,  struct force_array )
+#define IOCTL2_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 33, struct force_array )
 
-#define IOCTL3_JR3_RESET              _IO ( JR3_TYPE, 33 )
-#define IOCTL3_JR3_FILTER0            _IOR( JR3_TYPE, 34,  struct six_axis_array )
-#define IOCTL3_JR3_FILTER1            _IOR( JR3_TYPE, 35,  struct six_axis_array )
-#define IOCTL3_JR3_FILTER2            _IOR( JR3_TYPE, 36,  struct six_axis_array )
-#define IOCTL3_JR3_FILTER3            _IOR( JR3_TYPE, 37,  struct six_axis_array )
-#define IOCTL3_JR3_FILTER4            _IOR( JR3_TYPE, 38,  struct six_axis_array )
-#define IOCTL3_JR3_FILTER5            _IOR( JR3_TYPE, 39,  struct six_axis_array )
-#define IOCTL3_JR3_FILTER6            _IOR( JR3_TYPE, 40,  struct six_axis_array )
-#define IOCTL3_JR3_ZEROOFFS           _IO ( JR3_TYPE, 41   )
-#define IOCTL3_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 42, struct force_array )
-#define IOCTL3_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 43, struct force_array )
+#define IOCTL3_JR3_RESET              _IO ( JR3_TYPE, 34 )
+#define IOCTL3_JR3_FILTER0            _IOR( JR3_TYPE, 35,  struct six_axis_array )
+#define IOCTL3_JR3_FILTER1            _IOR( JR3_TYPE, 36,  struct six_axis_array )
+#define IOCTL3_JR3_FILTER2            _IOR( JR3_TYPE, 37,  struct six_axis_array )
+#define IOCTL3_JR3_FILTER3            _IOR( JR3_TYPE, 38,  struct six_axis_array )
+#define IOCTL3_JR3_FILTER4            _IOR( JR3_TYPE, 39,  struct six_axis_array )
+#define IOCTL3_JR3_FILTER5            _IOR( JR3_TYPE, 40,  struct six_axis_array )
+#define IOCTL3_JR3_FILTER6            _IOR( JR3_TYPE, 41,  struct six_axis_array )
+#define IOCTL3_JR3_ZEROOFFS           _IO ( JR3_TYPE, 42   )
+#define IOCTL3_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 43, struct force_array )
+#define IOCTL3_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 44, struct force_array )
 
-#define IOCTL_JR3_MAXNR 44
+#define IOCTL_JR3_MAXNR 45
 #endif
 

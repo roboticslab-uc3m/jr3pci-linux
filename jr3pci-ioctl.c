@@ -45,7 +45,7 @@ int jr3Filter(unsigned long arg, int num_filter, int card) {
 	int ret=0;
 	int axload[6];
 	int address;
-	
+
 	for (i = 0; i < 6; i++) {
 		address = JR3_FILTER0+0x08*num_filter+i;
 		axload[i]= (short) readData(address, card);
@@ -61,7 +61,7 @@ int jr3SetFullScales(unsigned long arg, int card) {
 	int ret=copy_from_user((int*) fs, (void *) arg, sizeof(force_array));
 	int i;
 	int address;
-	
+
 	for (i=0; i< 8; i++) {
 		address=JR3_FULLSCALE+i;
 		writeData(address,fs[i],card);
@@ -88,12 +88,32 @@ int jr3GetFullScales(unsigned long arg, int card) {
 	    fullscales[i]= readData(JR3_FULLSCALE+i, card);
   ret = copy_to_user((void *) arg, (int *) fullscales, sizeof(force_array));
 
-  return ret;  
+  return ret;
+}
+
+int jr3GetForceAndRaw(unsigned long arg) {
+	int i;
+	int ret = 0;
+	int data[70]; // (16 * 4) + 6
+
+	for (i = 0; i < 16; i++) {
+		data[(i * 4)] = readData(JR3_RAWCHANNELS + (i * 4), 0);
+		data[(i * 4) + 1] = readData(JR3_RAWCHANNELS + (i * 4) + 1, 0);
+		data[(i * 4) + 2] = 0;
+		data[(i * 4) + 3] = 0;
+	}
+
+	for (i = 0; i < 6; i++) {
+		data[i + 64] = readData(JR3_FILTER0 + i, 0);
+	}
+
+	ret = copy_to_user((void *) arg, (int *) data, sizeof(force_and_raw_array));
+	return ret;
 }
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
 int jr3_ioctl(struct inode *inode, struct file *filp, unsigned int cmd, unsigned long arg)
-#else 
+#else
 long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 #endif
 {
@@ -117,10 +137,10 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 #else
 	  if (_IOC_DIR(cmd) & _IOC_READ)
 		      err = !access_ok(VERIFY_WRITE, (void *)arg, size);
-	  
+
 	  if (_IOC_DIR(cmd) & _IOC_WRITE)
 	              err =  !access_ok(VERIFY_READ, (void *)arg, size);
-	  
+
 	  if (err) return -EFAULT;
 #endif
 	switch(cmd) {
@@ -133,25 +153,25 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			break;
 		case IOCTL0_JR3_FILTER0:
 			ret = jr3Filter(arg, 0,0);
-			break;	 
+			break;
 		case IOCTL0_JR3_FILTER1:
 			ret = jr3Filter(arg, 1,0);
-			break;	 
+			break;
 		case IOCTL0_JR3_FILTER2:
 			ret = jr3Filter(arg, 2,0);
-			break;	 
+			break;
 		case IOCTL0_JR3_FILTER3:
 			ret = jr3Filter(arg, 3,0);
-			break;	 
+			break;
 		case IOCTL0_JR3_FILTER4:
 			ret = jr3Filter(arg, 4,0);
-			break;	 
+			break;
 		case IOCTL0_JR3_FILTER5:
 			ret = jr3Filter(arg, 5,0);
-			break;	 
+			break;
 		case IOCTL0_JR3_FILTER6:
 			ret = jr3Filter(arg, 6,0);
-			break;	 
+			break;
 		case IOCTL0_JR3_GET_FULL_SCALES:
 			ret = jr3GetFullScales(arg,0);
 			break;
@@ -159,6 +179,9 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3SetFullScales(arg,0);
 			else ret=-1;
+			break;
+		case IOCTL0_JR3_GET_FORCE_AND_RAW:
+			ret = jr3GetForceAndRaw(arg);
 			break;
 
 		case IOCTL1_JR3_RESET:
@@ -175,37 +198,37 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 0,1);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL1_JR3_FILTER1:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 1,1);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL1_JR3_FILTER2:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 2,1);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL1_JR3_FILTER3:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 3,1);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL1_JR3_FILTER4:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 4,1);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL1_JR3_FILTER5:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 5,1);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL1_JR3_FILTER6:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3Filter(arg, 6,1);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL1_JR3_GET_FULL_SCALES:
 			if ((PCI_DEVICE_ID_JR3==0x3112)||(PCI_DEVICE_ID_JR3==0x3114))
 				ret = jr3GetFullScales(arg,1);
@@ -231,37 +254,37 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 0,2);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL2_JR3_FILTER1:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 1,2);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL2_JR3_FILTER2:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 2,2);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL2_JR3_FILTER3:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 3,2);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL2_JR3_FILTER4:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 4,2);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL2_JR3_FILTER5:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 5,2);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL2_JR3_FILTER6:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 6,2);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL2_JR3_GET_FULL_SCALES:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3GetFullScales(arg,2);
@@ -287,37 +310,37 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 0,3);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL3_JR3_FILTER1:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 1,3);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL3_JR3_FILTER2:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 2,3);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL3_JR3_FILTER3:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 3,3);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL3_JR3_FILTER4:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 4,3);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL3_JR3_FILTER5:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 5,3);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL3_JR3_FILTER6:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3Filter(arg, 6,3);
 			else ret=-1;
-			break;	 
+			break;
 		case IOCTL3_JR3_GET_FULL_SCALES:
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3GetFullScales(arg,3);
