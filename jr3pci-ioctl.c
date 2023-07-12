@@ -111,6 +111,30 @@ int jr3GetForceAndRaw(unsigned long arg) {
 	return ret;
 }
 
+int jr3DumpDsp(void) {
+	int i;
+	int card;
+
+	for (card = 0; card < 4; card++)
+	{
+		for (i = 0; i < 0xFF; i += 8) {
+			printk(KERN_INFO "jr3pci(%d): [0x%02X] 0x%04X 0x%04X 0x%04X 0x%04X 0x%04X 0x%04X 0x%04X 0x%04X",
+				   card, i,
+				   (unsigned short)readData(JR3_RAWCHANNELS + i,     card),
+				   (unsigned short)readData(JR3_RAWCHANNELS + i + 1, card),
+				   (unsigned short)readData(JR3_RAWCHANNELS + i + 2, card),
+				   (unsigned short)readData(JR3_RAWCHANNELS + i + 3, card),
+				   (unsigned short)readData(JR3_RAWCHANNELS + i + 4, card),
+				   (unsigned short)readData(JR3_RAWCHANNELS + i + 5, card),
+				   (unsigned short)readData(JR3_RAWCHANNELS + i + 6, card),
+				   (unsigned short)readData(JR3_RAWCHANNELS + i + 7, card)
+				   );
+		}
+	}
+
+	return 0;
+}
+
 #if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,36)
 int jr3_ioctl(struct inode *inode, struct file *filp, unsigned int cmd, unsigned long arg)
 #else
@@ -350,6 +374,10 @@ long jr3_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 			if (PCI_DEVICE_ID_JR3==0x3114)
 				ret = jr3SetFullScales(arg,3);
 			else ret=-1;
+			break;
+
+		case IOCTL_JR3_DUMP_DSP:
+			ret = jr3DumpDsp();
 			break;
 
 		default:

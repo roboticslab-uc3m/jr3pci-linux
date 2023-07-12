@@ -55,3 +55,9 @@ dkms.conf
 /jr3mon
 /reset
 /test
+/raw
+
+# Miscellanea
+/.vs/
+/.vscode/
+

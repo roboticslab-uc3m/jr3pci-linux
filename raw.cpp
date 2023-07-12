@@ -1,6 +1,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
@@ -20,8 +21,9 @@ int main(void) {
 	ret=ioctl(fd,IOCTL0_JR3_GET_FORCE_AND_RAW,&fr);
 
 	if (ret!=-1) {
-		for (i=0;i<16;i++) {
-			printf("channel %d: time = %u, value = %d\n",i,fr.raw_channels[i].raw_time,fr.raw_channels[i].raw_data);
+		for (i=0;i<8;i++) {
+			printf("channel %d: time = %u, value = 0x%04X, signed = %d\n",
+					i, fr.raw_channels[i].raw_time, (uint16_t)(fr.raw_channels[i].raw_data), (int16_t)(fr.raw_channels[i].raw_data));
 		}
 		for (i=0;i<3;i++) {
 			printf("f[%d] = %d\n",i,fr.filtered.f[i]);
@@ -30,6 +32,11 @@ int main(void) {
 			printf("m[%d] = %d\n",i,fr.filtered.m[i]);
 		}
 	} else
+		perror("");
+
+	ret=ioctl(fd,IOCTL_JR3_DUMP_DSP);
+
+	if (ret==-1)
 		perror("");
 
 	close(fd);

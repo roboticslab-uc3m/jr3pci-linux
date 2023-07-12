@@ -78,6 +78,8 @@ typedef struct force_and_raw_array {
 #define IOCTL3_JR3_GET_FULL_SCALES    _IOR( JR3_TYPE, 43, struct force_array )
 #define IOCTL3_JR3_SET_FULL_SCALES    _IOW( JR3_TYPE, 44, struct force_array )
 
-#define IOCTL_JR3_MAXNR 45
+#define IOCTL_JR3_DUMP_DSP            _IO ( JR3_TYPE, 45   )
+
+#define IOCTL_JR3_MAXNR 46
 #endif
 
